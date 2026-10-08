@@ -4,7 +4,7 @@ using Microsoft.CodeAnalysis.Diagnostics;
 using Microsoft.CodeAnalysis.Text;
 using TypedPrompt.Core;
 
-namespace TypedPrompt.Generator;
+namespace TypedPrompt.CSharp.Generator;
 
 /// <summary>
 /// Turns every <c>*.prompt.toml</c> additional file into a strongly typed C# prompt class. Problems in the files become

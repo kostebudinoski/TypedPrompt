@@ -13,12 +13,12 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\TypedPrompt.Generator\TypedPrompt.Generator.csproj" ReferenceOutputAssembly="false" PrivateAssets="all" />
+    <ProjectReference Include="..\TypedPrompt.CSharp.Generator\TypedPrompt.CSharp.Generator.csproj" ReferenceOutputAssembly="false" PrivateAssets="all" />
   </ItemGroup>
 
   <ItemGroup>
-    <None Include="..\TypedPrompt.Generator\bin\$(Configuration)\netstandard2.0\TypedPrompt.Generator.dll" Pack="true" PackagePath="analyzers/dotnet/cs" Visible="false" />
-    <None Include="..\TypedPrompt.Generator\bin\$(Configuration)\netstandard2.0\Tomlyn.dll" Pack="true" PackagePath="analyzers/dotnet/cs" Visible="false" />
+    <None Include="..\TypedPrompt.CSharp.Generator\bin\$(Configuration)\netstandard2.0\TypedPrompt.CSharp.Generator.dll" Pack="true" PackagePath="analyzers/dotnet/cs" Visible="false" />
+    <None Include="..\TypedPrompt.CSharp.Generator\bin\$(Configuration)\netstandard2.0\Tomlyn.dll" Pack="true" PackagePath="analyzers/dotnet/cs" Visible="false" />
     <None Include="buildTransitive\**" Pack="true" PackagePath="buildTransitive" />
     <None Include="PACKAGE.md" Pack="true" PackagePath="/" />
   </ItemGroup>

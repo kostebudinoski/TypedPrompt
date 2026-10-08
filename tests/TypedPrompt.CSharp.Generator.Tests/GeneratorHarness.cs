@@ -6,7 +6,7 @@ using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.Diagnostics;
 using Microsoft.CodeAnalysis.Text;
 
-namespace TypedPrompt.Generator.Tests;
+namespace TypedPrompt.CSharp.Generator.Tests;
 
 /// <summary>Runs the real generator on in-memory prompt files and compiles the result, like a build would.</summary>
 internal static class GeneratorHarness

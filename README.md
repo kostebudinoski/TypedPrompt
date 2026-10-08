@@ -216,7 +216,7 @@ A file with errors generates no class; the other files still do.
 ```
 
 To see the generated code, set `<EmitCompilerGeneratedFiles>true</EmitCompilerGeneratedFiles>`; the files appear under
-`obj/.../generated/TypedPrompt.Generator/`. Generated classes are `partial`, so you can add members in your own file.
+`obj/.../generated/TypedPrompt.CSharp.Generator/`. Generated classes are `partial`, so you can add members in your own file.
 
 ## Build from source
 

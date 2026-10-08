@@ -1,7 +1,7 @@
 using System.Reflection;
 using Microsoft.CodeAnalysis;
 
-namespace TypedPrompt.Generator.Tests;
+namespace TypedPrompt.CSharp.Generator.Tests;
 
 public class PromptGeneratorTests
 {

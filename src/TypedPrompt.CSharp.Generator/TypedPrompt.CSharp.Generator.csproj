@@ -3,7 +3,7 @@
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
     <Description>Source generator: turns *.prompt.toml files into strongly typed C# prompt classes.</Description>
-    <RootNamespace>TypedPrompt.Generator</RootNamespace>
+    <RootNamespace>TypedPrompt.CSharp.Generator</RootNamespace>
     <IsRoslynComponent>true</IsRoslynComponent>
     <EnforceExtendedAnalyzerRules>true</EnforceExtendedAnalyzerRules>
     <IsPackable>false</IsPackable>
@@ -21,7 +21,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <InternalsVisibleTo Include="TypedPrompt.Generator.Tests" />
+    <InternalsVisibleTo Include="TypedPrompt.CSharp.Generator.Tests" />
   </ItemGroup>
 
   <Target Name="CopyTomlynToOutput" AfterTargets="Build">

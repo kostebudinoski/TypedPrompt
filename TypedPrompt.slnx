@@ -2,7 +2,7 @@
   <Folder Name="/src/">
     <Project Path="src/TypedPrompt/TypedPrompt.csproj" />
     <Project Path="src/TypedPrompt.Core/TypedPrompt.Core.csproj" />
-    <Project Path="src/TypedPrompt.Generator/TypedPrompt.Generator.csproj" />
+    <Project Path="src/TypedPrompt.CSharp.Generator/TypedPrompt.CSharp.Generator.csproj" />
   </Folder>
   <Folder Name="/samples/">
     <Project Path="samples/Sample/Sample.csproj" />
@@ -10,6 +10,6 @@
   <Folder Name="/tests/">
     <Project Path="tests/TypedPrompt.Tests/TypedPrompt.Tests.csproj" />
     <Project Path="tests/TypedPrompt.Core.Tests/TypedPrompt.Core.Tests.csproj" />
-    <Project Path="tests/TypedPrompt.Generator.Tests/TypedPrompt.Generator.Tests.csproj" />
+    <Project Path="tests/TypedPrompt.CSharp.Generator.Tests/TypedPrompt.CSharp.Generator.Tests.csproj" />
   </Folder>
 </Solution>

@@ -2,7 +2,7 @@ using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.Text;
 using TypedPrompt.Core;
 
-namespace TypedPrompt.Generator;
+namespace TypedPrompt.CSharp.Generator;
 
 /// <summary>Turns Core's language-neutral problems into compiler diagnostics at the file and line.</summary>
 internal static class Diagnostics
