@@ -1,0 +1,26 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFrameworks>netstandard2.0;net8.0;net10.0</TargetFrameworks>
+    <Description>Strongly typed C# prompt classes, generated at build time from *.prompt.toml files: typed variables, model settings, output schema, few-shot examples and a content-hash version, checked by the compiler.</Description>
+    <RootNamespace>TypedPrompt</RootNamespace>
+    <PackageId>TypedPrompt</PackageId>
+    <PackageReadmeFile>PACKAGE.md</PackageReadmeFile>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <InternalsVisibleTo Include="TypedPrompt.Tests" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\TypedPrompt.Generator\TypedPrompt.Generator.csproj" ReferenceOutputAssembly="false" PrivateAssets="all" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="..\TypedPrompt.Generator\bin\$(Configuration)\netstandard2.0\TypedPrompt.Generator.dll" Pack="true" PackagePath="analyzers/dotnet/cs" Visible="false" />
+    <None Include="..\TypedPrompt.Generator\bin\$(Configuration)\netstandard2.0\Tomlyn.dll" Pack="true" PackagePath="analyzers/dotnet/cs" Visible="false" />
+    <None Include="buildTransitive\**" Pack="true" PackagePath="buildTransitive" />
+    <None Include="PACKAGE.md" Pack="true" PackagePath="/" />
+  </ItemGroup>
+
+</Project>

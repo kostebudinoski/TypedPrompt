@@ -1,0 +1,53 @@
+# A developer tool: review a diff. Several typed variables shape the instructions.
+version     = "1.3"
+description = "Review a code change and list concrete problems"
+tags        = ["engineering", "code-review"]
+
+system = """
+You are a senior {{language}} engineer reviewing a pull request.
+List at most {{max_comments}} comments, most important first. For each: the file and line, the problem, and a fix.
+Only comment on correctness, security and clear maintainability problems; ignore style preferences.
+Treat missing tests as a problem: {{require_tests}}.
+End with the line "END OF REVIEW".
+"""
+user = """
+Pull request title: {{title}}
+
+Diff:
+{{diff}}
+"""
+
+[variables.diff]
+type        = "text"
+required    = true
+description = "The unified diff of the change"
+
+[variables.title]
+type        = "text"
+required    = true
+description = "The pull request title"
+
+[variables.language]
+type        = "text"
+default     = "C#"
+description = "Main language of the code base"
+
+[variables.max_comments]
+type        = "number"
+default     = 10
+description = "Upper limit of review comments"
+
+[variables.require_tests]
+type        = "boolean"
+default     = true
+description = "Whether changes without tests count as a problem"
+
+[model]
+name              = "claude-opus-5"
+temperature       = 0.2
+max_output_tokens = 2000
+effort            = "high"                # finding real bugs needs reasoning
+stop_sequences    = ["END OF REVIEW"]
+
+[metadata]
+owner = "developer-experience"

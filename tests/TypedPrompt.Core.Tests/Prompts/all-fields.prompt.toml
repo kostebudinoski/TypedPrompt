@@ -1,0 +1,87 @@
+# Test fixture: every field the format supports. Generates AllFieldsPrompt (class name from the file name).
+
+key         = "support.reply"                      # optional; default: the file name without .prompt.toml
+version     = "2.1"                                # optional label; the content hash identifies the prompt either way
+description = "Draft a reply to a customer"         # optional; summary of the class and ITypedPrompt.Description
+tags        = ["support", "email"]                 # optional; ITypedPrompt.Tags
+
+# optional; the system message. ''' keeps backslashes as written, so \{{ (a literal "{{") needs no TOML escaping;
+# inside """ it would have to be written \\{{.
+system = '''
+You are a support agent for {{company}}. Write in a {{tone}} tone.
+Sign as {{agent_name}}. Use at most {{max_words}} words. Write \{{placeholders}} literally when quoting templates.
+'''
+
+# required; the user message
+user = """
+Customer message:
+{{message}}
+
+Offer a refund: {{offer_refund}}
+"""
+
+# optional; few-shot examples. Sent between the system message and the user message: [system, user, assistant, ..., user],
+# wherever they are in the file. Like every [section], they must come after the top-level fields above. Placeholders work here too.
+[[examples]]
+user      = "Customer message:\nWhere is my parcel?"
+assistant = '''{"subject": "Your parcel", "body": "Hi, your parcel ships tomorrow. Kind regards, {{company}}", "refund": false}'''
+
+[[examples]]
+user      = "Customer message:\nThe lamp arrived broken."
+assistant = '''{"subject": "Sorry about the lamp", "body": "We are sorry! A replacement is on its way.", "refund": true}'''
+
+# One section per {{placeholder}}. type: text | number | boolean.
+
+[variables.message]
+type        = "text"
+required    = true                                 # required parameter of Render
+description = "The customer's message"             # XML doc of the parameter
+
+[variables.company]
+type    = "text"
+default = "Acme"                                   # optional parameter with this default
+
+[variables.tone]
+type        = "text"
+default     = "friendly"
+description = "e.g. friendly, formal, apologetic"
+
+[variables.agent_name]
+type = "text"                                      # optional, no default: nullable parameter, renders as empty text
+
+[variables.max_words]
+type    = "number"                                 # double parameter; renders 150, 0.5, never 0,5
+default = 150
+
+[variables.offer_refund]
+type    = "boolean"                                # bool parameter; renders true / false
+default = false
+
+# optional; advisory model settings, ITypedPrompt.Model
+[model]
+name              = "claude-sonnet-5"
+temperature       = 0.4
+top_p             = 0.9
+top_k             = 40
+max_output_tokens = 600                            # output tokens only
+stop_sequences    = ["\n\nCustomer:"]
+effort            = "medium"                       # optional; minimal | low | medium | high | max
+
+# optional; present means a JSON answer is expected, ITypedPrompt.OutputSchema
+[output]
+schema = '''
+{
+  "type": "object",
+  "properties": {
+    "subject": { "type": "string", "description": "Email subject line" },
+    "body":    { "type": "string", "description": "Email body" },
+    "refund":  { "type": "boolean", "description": "Whether the reply offers a refund" }
+  },
+  "required": ["subject", "body", "refund"]
+}
+'''
+
+# optional; free text values, ITypedPrompt.Metadata
+[metadata]
+owner  = "support-team"
+ticket = "SUP-142"

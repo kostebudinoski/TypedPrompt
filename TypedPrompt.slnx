@@ -1,0 +1,15 @@
+<Solution>
+  <Folder Name="/src/">
+    <Project Path="src/TypedPrompt/TypedPrompt.csproj" />
+    <Project Path="src/TypedPrompt.Core/TypedPrompt.Core.csproj" />
+    <Project Path="src/TypedPrompt.Generator/TypedPrompt.Generator.csproj" />
+  </Folder>
+  <Folder Name="/samples/">
+    <Project Path="samples/Sample/Sample.csproj" />
+  </Folder>
+  <Folder Name="/tests/">
+    <Project Path="tests/TypedPrompt.Tests/TypedPrompt.Tests.csproj" />
+    <Project Path="tests/TypedPrompt.Core.Tests/TypedPrompt.Core.Tests.csproj" />
+    <Project Path="tests/TypedPrompt.Generator.Tests/TypedPrompt.Generator.Tests.csproj" />
+  </Folder>
+</Solution>

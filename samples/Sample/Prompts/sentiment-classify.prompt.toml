@@ -1,0 +1,36 @@
+# Classification with few-shot examples: the examples teach the exact answer format.
+description = "Classify the sentiment of a customer review"
+tags        = ["classification", "reviews"]
+
+system = """
+Classify the sentiment of the review as positive, neutral or negative.
+Answer with the label only.{{explain_hint}}
+"""
+user = "{{review}}"
+
+[[examples]]
+user      = "Arrived a day early and works perfectly. Would buy again!"
+assistant = "positive"
+
+[[examples]]
+user      = "It does what it says. Nothing special."
+assistant = "neutral"
+
+[[examples]]
+user      = "Stopped working after a week and support never answered."
+assistant = "negative"
+
+[variables.review]
+type        = "text"
+required    = true
+description = "The review text"
+
+[variables.explain_hint]
+type        = "text"
+default     = ""
+description = "Optional extra instruction, e.g. \" Then give one short reason.\""
+
+[model]
+name              = "claude-haiku-4-5"    # small and fast is enough for classification
+temperature       = 0
+max_output_tokens = 20

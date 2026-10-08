@@ -1,0 +1,60 @@
+# Pull structured data out of a document. The schema makes the answer machine-readable.
+description = "Extract the key fields of an invoice as JSON"
+tags        = ["documents", "extraction"]
+
+system = """
+You extract data from invoices. Read the invoice text and fill in the JSON fields exactly as they appear.
+Amounts are numbers without currency symbols. Dates are ISO 8601 (YYYY-MM-DD). Use {{currency}} when the invoice does not
+state a currency. If a field is missing, use null. Respond with JSON only.
+"""
+user = """
+Invoice:
+{{invoice_text}}
+"""
+
+[variables.invoice_text]
+type        = "text"
+required    = true
+description = "The invoice as plain text, e.g. from OCR or a PDF"
+
+[variables.currency]
+type        = "text"
+default     = "EUR"
+description = "Currency to assume when the invoice states none (ISO 4217 code)"
+
+[model]
+name              = "claude-sonnet-5"
+temperature       = 0                     # extraction should be deterministic
+max_output_tokens = 1000
+effort            = "low"                 # reading, not reasoning
+
+[output]
+schema = '''
+{
+  "type": "object",
+  "properties": {
+    "invoice_number": { "type": ["string", "null"] },
+    "issue_date":     { "type": ["string", "null"], "description": "YYYY-MM-DD" },
+    "due_date":       { "type": ["string", "null"], "description": "YYYY-MM-DD" },
+    "supplier":       { "type": ["string", "null"] },
+    "currency":       { "type": "string", "description": "ISO 4217 code, e.g. EUR" },
+    "total":          { "type": ["number", "null"] },
+    "lines": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "description": { "type": "string" },
+          "quantity":    { "type": "number" },
+          "amount":      { "type": "number" }
+        },
+        "required": ["description", "amount"]
+      }
+    }
+  },
+  "required": ["invoice_number", "issue_date", "supplier", "currency", "total", "lines"]
+}
+'''
+
+[metadata]
+owner = "finance-automation"

@@ -1,0 +1,23 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <ItemGroup>
+    <PackageReference Include="xunit.v3" />
+    <PackageReference Include="Microsoft.CodeAnalysis.CSharp" />
+    <PackageReference Include="Tomlyn" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Using Include="Xunit" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="../../samples/Sample/Prompts/*.prompt.toml" LinkBase="Prompts" CopyToOutputDirectory="PreserveNewest" />
+    <None Include="../TypedPrompt.Core.Tests/Prompts/*.prompt.toml" LinkBase="Prompts" CopyToOutputDirectory="PreserveNewest" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\src\TypedPrompt\TypedPrompt.csproj" />
+    <ProjectReference Include="..\..\src\TypedPrompt.Generator\TypedPrompt.Generator.csproj" />
+  </ItemGroup>
+
+</Project>

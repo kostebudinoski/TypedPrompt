@@ -1,0 +1,50 @@
+name: Release
+
+# Pushing a tag such as v0.1.0-preview.1 builds, tests, packs that exact version (MinVer reads the tag) and publishes it.
+on:
+  push:
+    tags: ['v*']
+
+permissions:
+  contents: read
+
+jobs:
+  publish:
+    name: Publish to NuGet.org
+    runs-on: ubuntu-latest
+    environment: nuget   # optional: protect with required reviewers in the repository settings
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          fetch-depth: 0
+
+      - uses: actions/setup-dotnet@v6
+        with:
+          global-json-file: global.json
+          dotnet-version: 8.0.x
+
+      - name: Restore
+        run: dotnet restore
+
+      - name: Build
+        run: dotnet build --no-restore -c Release
+
+      - name: Test
+        run: dotnet test --no-build -c Release
+
+      - name: Pack
+        run: dotnet pack src/TypedPrompt --no-build -c Release -o artifacts
+
+      - name: Check the package version matches the tag
+        run: |
+          expected="${GITHUB_REF_NAME#v}"
+          test -f "artifacts/TypedPrompt.${expected}.nupkg" || { echo "No TypedPrompt.${expected}.nupkg in artifacts:"; ls artifacts; exit 1; }
+
+      - name: Push to NuGet.org
+        run: dotnet nuget push "artifacts/*.nupkg" --api-key "${{ secrets.NUGET_API_KEY }}" --source https://api.nuget.org/v3/index.json --skip-duplicate
+
+      - name: Keep the packages
+        uses: actions/upload-artifact@v7
+        with:
+          name: packages
+          path: artifacts/*.*nupkg

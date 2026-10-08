@@ -1,0 +1,20 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <ItemGroup>
+    <PackageReference Include="xunit.v3" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Using Include="Xunit" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="../../samples/Sample/Prompts/*.prompt.toml" LinkBase="Prompts" CopyToOutputDirectory="PreserveNewest" />
+    <None Include="Prompts/*.prompt.toml" CopyToOutputDirectory="PreserveNewest" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\src\TypedPrompt.Core\TypedPrompt.Core.csproj" />
+  </ItemGroup>
+
+</Project>
