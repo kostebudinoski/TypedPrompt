@@ -13,6 +13,9 @@ jobs:
     name: Publish to NuGet.org
     runs-on: ubuntu-latest
     environment: nuget   # optional: protect with required reviewers in the repository settings
+    permissions:
+      contents: read
+      id-token: write    # NuGet Trusted Publishing: GitHub OIDC token, exchanged for a 1-hour API key
     steps:
       - uses: actions/checkout@v7
         with:
@@ -40,8 +43,14 @@ jobs:
           expected="${GITHUB_REF_NAME#v}"
           test -f "artifacts/TypedPrompt.${expected}.nupkg" || { echo "No TypedPrompt.${expected}.nupkg in artifacts:"; ls artifacts; exit 1; }
 
+      - name: NuGet login (OIDC → temporary API key)
+        id: login
+        uses: NuGet/login@v1
+        with:
+          user: kbudinoski   # nuget.org profile name, not the email address
+
       - name: Push to NuGet.org
-        run: dotnet nuget push "artifacts/*.nupkg" --api-key "${{ secrets.NUGET_API_KEY }}" --source https://api.nuget.org/v3/index.json --skip-duplicate
+        run: dotnet nuget push "artifacts/*.nupkg" --api-key "${{ steps.login.outputs.NUGET_API_KEY }}" --source https://api.nuget.org/v3/index.json --skip-duplicate
 
       - name: Keep the packages
         uses: actions/upload-artifact@v7

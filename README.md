@@ -237,5 +237,6 @@ git tag v0.1.0-preview.1
 git push origin v0.1.0-preview.1
 ```
 
-The `Release` workflow builds, tests, packs exactly that version and pushes it to NuGet.org. It needs a repository secret
-`NUGET_API_KEY` (a NuGet.org API key with push rights for `TypedPrompt`).
+The `Release` workflow builds, tests, packs exactly that version and pushes it to NuGet.org. It uses
+[NuGet Trusted Publishing](https://learn.microsoft.com/nuget/nuget-org/trusted-publishing): no stored API key, just a
+policy on nuget.org for this repository and `release.yml`.
