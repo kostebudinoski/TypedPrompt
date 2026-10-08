@@ -6,7 +6,7 @@ breaking changes. Versions come from git tags (`v0.1.0-preview.1` → `0.1.0-pre
 
 ## [Unreleased]
 
-## [0.1.0-preview.1] - not published
+## [0.1.0-preview.1] - 2026-10-08
 
 First preview.
 
