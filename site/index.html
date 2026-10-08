@@ -1,0 +1,326 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>TypedPrompt - strongly typed LLM prompts for .NET</title>
+<meta name="description" content="Write LLM prompts as .prompt.toml files. TypedPrompt turns each one into a strongly typed C# class at build time. A missing value or a typo in a placeholder is a compile error.">
+<meta property="og:title" content="TypedPrompt">
+<meta property="og:description" content="Strongly typed LLM prompts for .NET, generated at build time from TOML files.">
+<meta property="og:type" content="website">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='6' fill='%230f766e'/%3E%3Ctext x='16' y='22' font-family='monospace' font-size='16' font-weight='700' text-anchor='middle' fill='white'%3E%7B%7D%3C/text%3E%3C/svg%3E">
+<style>
+  :root {
+    --bg: #fbfaf8;
+    --surface: #ffffff;
+    --surface-code: #f4f2ee;
+    --text: #1c1b19;
+    --text-muted: #5c5a55;
+    --border: #e3e0da;
+    --accent: #0f766e;
+    --accent-text: #0b5e58;
+    --error: #b42318;
+    --tok-key: #7a3e9d;
+    --tok-str: #2f6f2f;
+    --tok-num: #a1520b;
+    --tok-sec: #0b5e58;
+    --tok-com: #8a8780;
+    --tok-type: #1d5fa8;
+    --radius: 6px;
+    --font: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+    --mono: ui-monospace, "Cascadia Code", "SF Mono", Menlo, Consolas, monospace;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --bg: #141413;
+      --surface: #1b1b1a;
+      --surface-code: #1f1f1d;
+      --text: #ecebe8;
+      --text-muted: #a3a19b;
+      --border: #2f2e2b;
+      --accent: #2dd4bf;
+      --accent-text: #5eead4;
+      --error: #f97066;
+      --tok-key: #d2a8ff;
+      --tok-str: #8fd48f;
+      --tok-num: #f0b072;
+      --tok-sec: #5eead4;
+      --tok-com: #7d7b75;
+      --tok-type: #79b8ff;
+    }
+  }
+  * { box-sizing: border-box; }
+  html { -webkit-text-size-adjust: 100%; }
+  body {
+    margin: 0;
+    background: var(--bg);
+    color: var(--text);
+    font: 1rem/1.6 var(--font);
+  }
+  a { color: var(--accent-text); }
+  a:focus-visible, button:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+  .wrap { max-width: 64rem; margin: 0 auto; padding: 0 1rem; }
+  .skip { position: absolute; left: -999px; }
+  .skip:focus { left: 1rem; top: 1rem; background: var(--surface); padding: 0.5rem 0.75rem; z-index: 1; }
+
+  header.top { border-bottom: 1px solid var(--border); }
+  header.top .wrap { display: flex; align-items: center; justify-content: space-between; gap: 1rem; height: 3.5rem; }
+  .brand { font: 700 1rem var(--mono); color: var(--text); text-decoration: none; }
+  .brand span { color: var(--accent-text); }
+  nav ul { display: flex; gap: 1.25rem; list-style: none; margin: 0; padding: 0; font-size: 0.9375rem; }
+  nav a { color: var(--text-muted); text-decoration: none; }
+  nav a:hover { color: var(--text); }
+
+  .hero { padding: 4rem 0 3rem; }
+  .eyebrow { font: 600 0.8125rem var(--mono); color: var(--accent-text); margin: 0 0 1rem; letter-spacing: 0.02em; }
+  h1 { font-size: clamp(2rem, 5vw, 3rem); line-height: 1.15; margin: 0 0 1rem; letter-spacing: -0.02em; max-width: 20ch; }
+  .lead { font-size: 1.125rem; color: var(--text-muted); max-width: 40rem; margin: 0 0 2rem; }
+  .actions { display: flex; flex-wrap: wrap; gap: 0.75rem; align-items: center; }
+  .install {
+    display: inline-flex; align-items: center; gap: 0.75rem;
+    background: var(--surface-code); border: 1px solid var(--border); border-radius: var(--radius);
+    padding: 0.5rem 0.5rem 0.5rem 1rem; font: 0.9375rem var(--mono);
+  }
+  .install code::before { content: "$ "; color: var(--text-muted); }
+  .btn {
+    display: inline-flex; align-items: center; gap: 0.5rem;
+    border: 1px solid var(--border); border-radius: var(--radius);
+    background: var(--surface); color: var(--text);
+    font: 500 0.875rem var(--font); padding: 0.5rem 0.75rem; cursor: pointer; text-decoration: none;
+  }
+  .btn:hover { border-color: var(--text-muted); }
+  .btn.primary { background: var(--accent); border-color: var(--accent); color: #fff; }
+  @media (prefers-color-scheme: dark) { .btn.primary { color: #062a27; } }
+  .install .btn { padding: 0.25rem 0.625rem; }
+
+  section { padding: 3rem 0; border-top: 1px solid var(--border); }
+  h2 { font-size: 1.5rem; margin: 0 0 0.5rem; letter-spacing: -0.01em; }
+  h3 { font-size: 1rem; margin: 0 0 0.25rem; }
+  .sub { color: var(--text-muted); margin: 0 0 1.5rem; max-width: 42rem; }
+
+  .pair { display: grid; grid-template-columns: 1fr; gap: 1rem; }
+  @media (min-width: 900px) { .pair { grid-template-columns: 1fr 1fr; } }
+  figure { margin: 0; min-width: 0; }
+  figcaption { font: 0.8125rem var(--mono); color: var(--text-muted); margin-bottom: 0.5rem; }
+  pre {
+    margin: 0; background: var(--surface-code); border: 1px solid var(--border); border-radius: var(--radius);
+    padding: 1rem; overflow-x: auto; font: 0.875rem/1.55 var(--mono); tab-size: 4;
+  }
+  .k { color: var(--tok-key); }
+  .s { color: var(--tok-str); }
+  .n { color: var(--tok-num); }
+  .sec { color: var(--tok-sec); font-weight: 600; }
+  .c { color: var(--tok-com); }
+  .t { color: var(--tok-type); }
+  .ph { color: var(--tok-str); text-decoration: underline; text-decoration-color: var(--tok-num); text-underline-offset: 3px; }
+
+  .error-line {
+    margin-top: 1rem; border: 1px solid var(--border); border-left: 3px solid var(--error); border-radius: var(--radius);
+    background: var(--surface); padding: 0.75rem 1rem; font: 0.875rem/1.5 var(--mono); overflow-x: auto; white-space: pre;
+  }
+  .error-line b { color: var(--error); font-weight: 600; }
+
+  .features { display: grid; grid-template-columns: 1fr; gap: 1.5rem 2rem; list-style: none; margin: 0; padding: 0; }
+  @media (min-width: 640px) { .features { grid-template-columns: 1fr 1fr; } }
+  @media (min-width: 1000px) { .features { grid-template-columns: 1fr 1fr 1fr; } }
+  .features p { margin: 0; color: var(--text-muted); font-size: 0.9375rem; }
+  .features code, .steps code, .sub code { font: 0.875em var(--mono); background: var(--surface-code); padding: 0.1em 0.3em; border-radius: 3px; }
+
+  .steps { counter-reset: step; list-style: none; margin: 0; padding: 0; display: grid; gap: 1.5rem; }
+  .steps > li { counter-increment: step; display: grid; grid-template-columns: 2rem 1fr; gap: 0 0.75rem; }
+  .steps > li::before {
+    content: counter(step); grid-row: span 3;
+    width: 1.75rem; height: 1.75rem; border-radius: 50%; border: 1px solid var(--border);
+    display: grid; place-items: center; font: 600 0.8125rem var(--mono); color: var(--accent-text);
+  }
+  .steps p { margin: 0 0 0.5rem; color: var(--text-muted); }
+  .steps pre { grid-column: 2; }
+
+  footer { border-top: 1px solid var(--border); padding: 2rem 0 3rem; color: var(--text-muted); font-size: 0.875rem; }
+  footer .wrap { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 1rem; }
+  footer ul { display: flex; gap: 1.25rem; list-style: none; margin: 0; padding: 0; }
+  footer a { color: var(--text-muted); }
+
+  .sr-only { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+</style>
+</head>
+<body>
+<a class="skip" href="#main">Skip to content</a>
+
+<header class="top">
+  <div class="wrap">
+    <a class="brand" href="./">Typed<span>Prompt</span></a>
+    <nav aria-label="Main">
+      <ul>
+        <li><a href="#how">How it works</a></li>
+        <li><a href="#start">Get started</a></li>
+        <li><a href="https://github.com/kostebudinoski/TypedPrompt">GitHub</a></li>
+      </ul>
+    </nav>
+  </div>
+</header>
+
+<main id="main">
+  <div class="wrap hero">
+    <p class="eyebrow">.NET source generator · MIT</p>
+    <h1>LLM prompts the compiler can check.</h1>
+    <p class="lead">
+      Write each prompt as a <code>.prompt.toml</code> file. At build time TypedPrompt turns it into a C# class with one
+      constructor parameter per variable. Forget a value or mistype a placeholder, and the build fails - not production.
+    </p>
+    <div class="actions">
+      <div class="install">
+        <code id="install-cmd">dotnet add package TypedPrompt --prerelease</code>
+        <button class="btn" type="button" data-copy="install-cmd">Copy</button>
+      </div>
+      <a class="btn primary" href="https://www.nuget.org/packages/TypedPrompt/">View on NuGet</a>
+    </div>
+    <p class="sr-only" role="status" aria-live="polite" id="copy-status"></p>
+  </div>
+
+  <section id="how" aria-labelledby="how-title">
+    <div class="wrap">
+      <h2 id="how-title">A file in, a class out</h2>
+      <p class="sub">The file name becomes the class name. Variables become typed parameters; defaults become optional ones.</p>
+      <div class="pair">
+        <figure>
+          <figcaption>Prompts/ticket-summarize.prompt.toml</figcaption>
+<pre><code><span class="k">description</span> = <span class="s">"Summarise a support ticket"</span>
+
+<span class="k">system</span> = <span class="s">"""
+You are a support assistant. Answer in <span class="ph">{{language}}</span>.
+"""</span>
+<span class="k">user</span> = <span class="s">"<span class="ph">{{ticket}}</span>"</span>
+
+<span class="sec">[variables.ticket]</span>
+<span class="k">type</span>     = <span class="s">"text"</span>
+<span class="k">required</span> = <span class="n">true</span>
+
+<span class="sec">[variables.language]</span>
+<span class="k">type</span>    = <span class="s">"text"</span>
+<span class="k">default</span> = <span class="s">"English"</span>
+
+<span class="sec">[model]</span>
+<span class="k">name</span>              = <span class="s">"claude-sonnet-5"</span>
+<span class="k">temperature</span>       = <span class="n">0.2</span>
+<span class="k">max_output_tokens</span> = <span class="n">800</span></code></pre>
+        </figure>
+        <figure>
+          <figcaption>Program.cs</figcaption>
+<pre><code><span class="k">var</span> prompt = <span class="k">new</span> <span class="t">TicketSummarizePrompt</span>(
+    ticket: <span class="s">"Login page is slow since Monday."</span>);
+    <span class="c">// language defaults to "English"</span>
+
+<span class="t">RenderedPrompt</span> rendered = prompt.Render();
+
+rendered.System;       <span class="c">// "You are a support assistant. Answer in English."</span>
+rendered.User;         <span class="c">// "Login page is slow since Monday."</span>
+rendered.Messages;     <span class="c">// system, few-shot examples, user</span>
+rendered.Model;        <span class="c">// claude-sonnet-5, temperature 0.2, 800 tokens</span>
+rendered.OutputSchema; <span class="c">// JSON schema, or null</span>
+rendered.Version;      <span class="c">// "ticket-summarize#6cb228b5"</span>
+
+<span class="c">// Pass it to any SDK: Microsoft.Extensions.AI,</span>
+<span class="c">// Anthropic, OpenAI, Semantic Kernel …</span></code></pre>
+        </figure>
+      </div>
+      <div class="error-line" role="note" aria-label="Example build error">Prompts/ticket-summarize.prompt.toml(9,1): <b>error TP004</b>: {{tikcet}} is not declared in [variables]. Did you mean 'ticket'?</div>
+    </div>
+  </section>
+
+  <section aria-labelledby="why-title">
+    <div class="wrap">
+      <h2 id="why-title">Why TypedPrompt</h2>
+      <p class="sub">Prompts are code your model runs. Treat them like code.</p>
+      <ul class="features">
+        <li>
+          <h3>Checked at build time</h3>
+          <p>Thirteen diagnostics at the file and line: undeclared placeholders, unused variables, bad TOML, wrong value types, invalid JSON schemas - with “did you mean” hints.</p>
+        </li>
+        <li>
+          <h3>Nothing at runtime</h3>
+          <p>No parsing, no reflection, no TOML library in your app. Generated code just concatenates text. Safe for AOT and trimming.</p>
+        </li>
+        <li>
+          <h3>Any LLM SDK</h3>
+          <p>Render-only by design. You get messages, model settings and an output schema; you choose the client.</p>
+        </li>
+        <li>
+          <h3>Versioned by content</h3>
+          <p>Every prompt carries a hash of what the model actually sees. Log <code>rendered.Version</code> with each answer and know exactly which prompt produced it.</p>
+        </li>
+        <li>
+          <h3>Few-shot examples</h3>
+          <p>Add <code>[[examples]]</code> sections; they are sent as user/assistant pairs between the system and user text.</p>
+        </li>
+        <li>
+          <h3>One small package</h3>
+          <p>Runtime for .NET Standard 2.0, .NET 8 and .NET 10 with zero dependencies. Files in <code>Prompts/</code> are picked up automatically.</p>
+        </li>
+      </ul>
+    </div>
+  </section>
+
+  <section id="start" aria-labelledby="start-title">
+    <div class="wrap">
+      <h2 id="start-title">Get started</h2>
+      <p class="sub">Works in any project on .NET 8 or later, and in .NET Standard 2.0 libraries, with C# 9 or later.</p>
+      <ol class="steps">
+        <li>
+          <h3>Install the package</h3>
+          <p>One package holds both the runtime and the generator.</p>
+<pre><code>dotnet add package TypedPrompt --prerelease</code></pre>
+        </li>
+        <li>
+          <h3>Add a prompt file</h3>
+          <p>Put it in a <code>Prompts</code> folder. Any <code>*.prompt.toml</code> there is included.</p>
+<pre><code><span class="c"># Prompts/greeting.prompt.toml</span>
+<span class="k">user</span> = <span class="s">"Say hello to <span class="ph">{{name}}</span>."</span>
+
+<span class="sec">[variables.name]</span>
+<span class="k">type</span>     = <span class="s">"text"</span>
+<span class="k">required</span> = <span class="n">true</span></code></pre>
+        </li>
+        <li>
+          <h3>Build and use the class</h3>
+          <p>It lives in <code>&lt;RootNamespace&gt;.Prompts</code>.</p>
+<pre><code><span class="k">var</span> rendered = <span class="k">new</span> <span class="t">GreetingPrompt</span>(name: <span class="s">"Ada"</span>).Render();</code></pre>
+        </li>
+      </ol>
+      <p class="sub" style="margin-top: 2rem; margin-bottom: 0">
+        The full file format, every diagnostic and the settings are in the
+        <a href="https://github.com/kostebudinoski/TypedPrompt#readme">README</a>.
+      </p>
+    </div>
+  </section>
+</main>
+
+<footer>
+  <div class="wrap">
+    <span>TypedPrompt · MIT licence · © 2026 Koste Budinoski</span>
+    <ul>
+      <li><a href="https://www.nuget.org/packages/TypedPrompt/">NuGet</a></li>
+      <li><a href="https://github.com/kostebudinoski/TypedPrompt">GitHub</a></li>
+      <li><a href="https://github.com/kostebudinoski/TypedPrompt/blob/master/CHANGELOG.md">Changelog</a></li>
+    </ul>
+  </div>
+</footer>
+
+<script>
+  document.querySelectorAll("[data-copy]").forEach(function (button) {
+    button.addEventListener("click", function () {
+      var text = document.getElementById(button.dataset.copy).textContent;
+      var status = document.getElementById("copy-status");
+      navigator.clipboard.writeText(text).then(function () {
+        button.textContent = "Copied";
+        status.textContent = "Install command copied to clipboard";
+        setTimeout(function () { button.textContent = "Copy"; status.textContent = ""; }, 2000);
+      }, function () {
+        button.textContent = "Copy failed";
+        setTimeout(function () { button.textContent = "Copy"; }, 2000);
+      });
+    });
+  });
+</script>
+</body>
+</html>
