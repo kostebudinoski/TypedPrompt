@@ -43,7 +43,8 @@ public static class Identifiers
     /// <summary>The prompt name in a file path: the file name without <c>.prompt.toml</c> (or without its extension).</summary>
     public static string FileStem(string path)
     {
-        var name = System.IO.Path.GetFileName(path ?? string.Empty);
+        path ??= string.Empty;
+        var name = path.Substring(path.LastIndexOfAny(['/', '\\']) + 1);
         const string Suffix = ".prompt.toml";
         return name.EndsWith(Suffix, StringComparison.OrdinalIgnoreCase)
             ? name.Substring(0, name.Length - Suffix.Length)

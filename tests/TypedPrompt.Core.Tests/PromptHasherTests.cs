@@ -89,13 +89,14 @@ public class PromptHasherTests
     [Fact]
     public void Variable_order_and_line_endings_do_not_change_the_hash()
     {
-        var reordered = Full.Replace("[variables.message]\ntype        = \"text\"\nrequired    = true\ndescription = \"The message\"\n\n[variables.tone]\ntype    = \"text\"\ndefault = \"friendly\"",
+        var full = Full.ReplaceLineEndings("\n");
+        var reordered = full.Replace("[variables.message]\ntype        = \"text\"\nrequired    = true\ndescription = \"The message\"\n\n[variables.tone]\ntype    = \"text\"\ndefault = \"friendly\"",
             "[variables.tone]\ntype    = \"text\"\ndefault = \"friendly\"\n\n[variables.message]\ntype        = \"text\"\nrequired    = true\ndescription = \"The message\"", StringComparison.Ordinal);
-        var windows = Full.Replace("\n", "\r\n", StringComparison.Ordinal);
+        var windows = full.Replace("\n", "\r\n", StringComparison.Ordinal);
 
-        Assert.NotEqual(Full, reordered);
-        Assert.Equal(Parse(Full).ContentHash, Parse(reordered).ContentHash);
-        Assert.Equal(Parse(Full).ContentHash, Parse(windows).ContentHash);
+        Assert.NotEqual(full, reordered);
+        Assert.Equal(Parse(full).ContentHash, Parse(reordered).ContentHash);
+        Assert.Equal(Parse(full).ContentHash, Parse(windows).ContentHash);
     }
 
     [Fact]
