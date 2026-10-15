@@ -1,0 +1,151 @@
+#nullable enable
+override TypedPrompt.ModelSettings.Equals(object? obj) -> bool
+override TypedPrompt.ModelSettings.GetHashCode() -> int
+override TypedPrompt.ModelSettings.ToString() -> string!
+override TypedPrompt.PromptDefinition.Equals(object? obj) -> bool
+override TypedPrompt.PromptDefinition.GetHashCode() -> int
+override TypedPrompt.PromptDefinition.ToString() -> string!
+override TypedPrompt.PromptExample.Equals(object? obj) -> bool
+override TypedPrompt.PromptExample.GetHashCode() -> int
+override TypedPrompt.PromptExample.ToString() -> string!
+override TypedPrompt.PromptMessage.Equals(object? obj) -> bool
+override TypedPrompt.PromptMessage.GetHashCode() -> int
+override TypedPrompt.PromptMessage.ToString() -> string!
+override TypedPrompt.RenderedPrompt.Equals(object? obj) -> bool
+override TypedPrompt.RenderedPrompt.GetHashCode() -> int
+override TypedPrompt.RenderedPrompt.ToString() -> string!
+override TypedPrompt.VariableInfo.Equals(object? obj) -> bool
+override TypedPrompt.VariableInfo.GetHashCode() -> int
+override TypedPrompt.VariableInfo.ToString() -> string!
+static TypedPrompt.ModelSettings.operator !=(TypedPrompt.ModelSettings? left, TypedPrompt.ModelSettings? right) -> bool
+static TypedPrompt.ModelSettings.operator ==(TypedPrompt.ModelSettings? left, TypedPrompt.ModelSettings? right) -> bool
+static TypedPrompt.PromptDefinition.operator !=(TypedPrompt.PromptDefinition? left, TypedPrompt.PromptDefinition? right) -> bool
+static TypedPrompt.PromptDefinition.operator ==(TypedPrompt.PromptDefinition? left, TypedPrompt.PromptDefinition? right) -> bool
+static TypedPrompt.PromptExample.operator !=(TypedPrompt.PromptExample? left, TypedPrompt.PromptExample? right) -> bool
+static TypedPrompt.PromptExample.operator ==(TypedPrompt.PromptExample? left, TypedPrompt.PromptExample? right) -> bool
+static TypedPrompt.PromptMessage.operator !=(TypedPrompt.PromptMessage? left, TypedPrompt.PromptMessage? right) -> bool
+static TypedPrompt.PromptMessage.operator ==(TypedPrompt.PromptMessage? left, TypedPrompt.PromptMessage? right) -> bool
+static TypedPrompt.PromptValue.Format(bool value) -> string!
+static TypedPrompt.PromptValue.Format(bool? value) -> string!
+static TypedPrompt.PromptValue.Format(double value) -> string!
+static TypedPrompt.PromptValue.Format(double? value) -> string!
+static TypedPrompt.PromptValue.Format(string? value) -> string!
+static TypedPrompt.RenderedPrompt.operator !=(TypedPrompt.RenderedPrompt? left, TypedPrompt.RenderedPrompt? right) -> bool
+static TypedPrompt.RenderedPrompt.operator ==(TypedPrompt.RenderedPrompt? left, TypedPrompt.RenderedPrompt? right) -> bool
+static TypedPrompt.VariableInfo.operator !=(TypedPrompt.VariableInfo? left, TypedPrompt.VariableInfo? right) -> bool
+static TypedPrompt.VariableInfo.operator ==(TypedPrompt.VariableInfo? left, TypedPrompt.VariableInfo? right) -> bool
+TypedPrompt.ITypedPrompt
+TypedPrompt.ITypedPrompt.Definition.get -> TypedPrompt.PromptDefinition!
+TypedPrompt.ITypedPrompt.Render() -> TypedPrompt.RenderedPrompt!
+TypedPrompt.ModelSettings
+TypedPrompt.ModelSettings.<Clone>$() -> TypedPrompt.ModelSettings!
+TypedPrompt.ModelSettings.Deconstruct(out string? Name, out double? Temperature, out double? TopP, out int? TopK, out int? MaxOutputTokens, out System.Collections.Generic.IReadOnlyList<string!>? StopSequences, out string? Effort) -> void
+TypedPrompt.ModelSettings.Effort.get -> string?
+TypedPrompt.ModelSettings.Effort.init -> void
+TypedPrompt.ModelSettings.Equals(TypedPrompt.ModelSettings? other) -> bool
+TypedPrompt.ModelSettings.MaxOutputTokens.get -> int?
+TypedPrompt.ModelSettings.MaxOutputTokens.init -> void
+TypedPrompt.ModelSettings.ModelSettings(string? Name = null, double? Temperature = null, double? TopP = null, int? TopK = null, int? MaxOutputTokens = null, System.Collections.Generic.IReadOnlyList<string!>? StopSequences = null, string? Effort = null) -> void
+TypedPrompt.ModelSettings.Name.get -> string?
+TypedPrompt.ModelSettings.Name.init -> void
+TypedPrompt.ModelSettings.StopSequences.get -> System.Collections.Generic.IReadOnlyList<string!>?
+TypedPrompt.ModelSettings.StopSequences.init -> void
+TypedPrompt.ModelSettings.Temperature.get -> double?
+TypedPrompt.ModelSettings.Temperature.init -> void
+TypedPrompt.ModelSettings.TopK.get -> int?
+TypedPrompt.ModelSettings.TopK.init -> void
+TypedPrompt.ModelSettings.TopP.get -> double?
+TypedPrompt.ModelSettings.TopP.init -> void
+TypedPrompt.PromptDefinition
+TypedPrompt.PromptDefinition.<Clone>$() -> TypedPrompt.PromptDefinition!
+TypedPrompt.PromptDefinition.ContentHash.get -> string!
+TypedPrompt.PromptDefinition.ContentHash.init -> void
+TypedPrompt.PromptDefinition.Deconstruct(out string! Key, out string! UserTemplate) -> void
+TypedPrompt.PromptDefinition.Description.get -> string?
+TypedPrompt.PromptDefinition.Description.init -> void
+TypedPrompt.PromptDefinition.Equals(TypedPrompt.PromptDefinition? other) -> bool
+TypedPrompt.PromptDefinition.Examples.get -> System.Collections.Generic.IReadOnlyList<TypedPrompt.PromptExample!>!
+TypedPrompt.PromptDefinition.Examples.init -> void
+TypedPrompt.PromptDefinition.Key.get -> string!
+TypedPrompt.PromptDefinition.Key.init -> void
+TypedPrompt.PromptDefinition.Metadata.get -> System.Collections.Generic.IReadOnlyDictionary<string!, string!>!
+TypedPrompt.PromptDefinition.Metadata.init -> void
+TypedPrompt.PromptDefinition.Model.get -> TypedPrompt.ModelSettings?
+TypedPrompt.PromptDefinition.Model.init -> void
+TypedPrompt.PromptDefinition.OutputSchema.get -> string?
+TypedPrompt.PromptDefinition.OutputSchema.init -> void
+TypedPrompt.PromptDefinition.PromptDefinition(string! Key, string! UserTemplate) -> void
+TypedPrompt.PromptDefinition.SystemTemplate.get -> string?
+TypedPrompt.PromptDefinition.SystemTemplate.init -> void
+TypedPrompt.PromptDefinition.Tags.get -> System.Collections.Generic.IReadOnlyList<string!>!
+TypedPrompt.PromptDefinition.Tags.init -> void
+TypedPrompt.PromptDefinition.UserTemplate.get -> string!
+TypedPrompt.PromptDefinition.UserTemplate.init -> void
+TypedPrompt.PromptDefinition.Variables.get -> System.Collections.Generic.IReadOnlyList<TypedPrompt.VariableInfo!>!
+TypedPrompt.PromptDefinition.Variables.init -> void
+TypedPrompt.PromptDefinition.Version.get -> string!
+TypedPrompt.PromptDefinition.VersionLabel.get -> string?
+TypedPrompt.PromptDefinition.VersionLabel.init -> void
+TypedPrompt.PromptExample
+TypedPrompt.PromptExample.<Clone>$() -> TypedPrompt.PromptExample!
+TypedPrompt.PromptExample.Assistant.get -> string!
+TypedPrompt.PromptExample.Assistant.init -> void
+TypedPrompt.PromptExample.Deconstruct(out string! User, out string! Assistant) -> void
+TypedPrompt.PromptExample.Equals(TypedPrompt.PromptExample? other) -> bool
+TypedPrompt.PromptExample.PromptExample(string! User, string! Assistant) -> void
+TypedPrompt.PromptExample.User.get -> string!
+TypedPrompt.PromptExample.User.init -> void
+TypedPrompt.PromptMessage
+TypedPrompt.PromptMessage.<Clone>$() -> TypedPrompt.PromptMessage!
+TypedPrompt.PromptMessage.Deconstruct(out TypedPrompt.PromptRole Role, out string! Text) -> void
+TypedPrompt.PromptMessage.Equals(TypedPrompt.PromptMessage? other) -> bool
+TypedPrompt.PromptMessage.PromptMessage(TypedPrompt.PromptRole Role, string! Text) -> void
+TypedPrompt.PromptMessage.Role.get -> TypedPrompt.PromptRole
+TypedPrompt.PromptMessage.Role.init -> void
+TypedPrompt.PromptMessage.Text.get -> string!
+TypedPrompt.PromptMessage.Text.init -> void
+TypedPrompt.PromptRole
+TypedPrompt.PromptRole.Assistant = 2 -> TypedPrompt.PromptRole
+TypedPrompt.PromptRole.System = 0 -> TypedPrompt.PromptRole
+TypedPrompt.PromptRole.User = 1 -> TypedPrompt.PromptRole
+TypedPrompt.PromptValue
+TypedPrompt.RenderedPrompt
+TypedPrompt.RenderedPrompt.<Clone>$() -> TypedPrompt.RenderedPrompt!
+TypedPrompt.RenderedPrompt.Deconstruct(out string! Key, out string? System, out string! User, out TypedPrompt.ModelSettings? Model, out string? OutputSchema) -> void
+TypedPrompt.RenderedPrompt.Equals(TypedPrompt.RenderedPrompt? other) -> bool
+TypedPrompt.RenderedPrompt.Examples.get -> System.Collections.Generic.IReadOnlyList<TypedPrompt.PromptExample!>!
+TypedPrompt.RenderedPrompt.Examples.init -> void
+TypedPrompt.RenderedPrompt.Key.get -> string!
+TypedPrompt.RenderedPrompt.Key.init -> void
+TypedPrompt.RenderedPrompt.Messages.get -> System.Collections.Generic.IReadOnlyList<TypedPrompt.PromptMessage!>!
+TypedPrompt.RenderedPrompt.Model.get -> TypedPrompt.ModelSettings?
+TypedPrompt.RenderedPrompt.Model.init -> void
+TypedPrompt.RenderedPrompt.OutputSchema.get -> string?
+TypedPrompt.RenderedPrompt.OutputSchema.init -> void
+TypedPrompt.RenderedPrompt.RenderedPrompt(string! Key, string? System, string! User, TypedPrompt.ModelSettings? Model = null, string? OutputSchema = null) -> void
+TypedPrompt.RenderedPrompt.System.get -> string?
+TypedPrompt.RenderedPrompt.System.init -> void
+TypedPrompt.RenderedPrompt.Text.get -> string!
+TypedPrompt.RenderedPrompt.User.get -> string!
+TypedPrompt.RenderedPrompt.User.init -> void
+TypedPrompt.RenderedPrompt.Version.get -> string!
+TypedPrompt.RenderedPrompt.Version.init -> void
+TypedPrompt.VariableInfo
+TypedPrompt.VariableInfo.<Clone>$() -> TypedPrompt.VariableInfo!
+TypedPrompt.VariableInfo.Deconstruct(out string! Name, out TypedPrompt.VariableType Type, out bool Required, out object? Default, out string? Description) -> void
+TypedPrompt.VariableInfo.Default.get -> object?
+TypedPrompt.VariableInfo.Default.init -> void
+TypedPrompt.VariableInfo.Description.get -> string?
+TypedPrompt.VariableInfo.Description.init -> void
+TypedPrompt.VariableInfo.Equals(TypedPrompt.VariableInfo? other) -> bool
+TypedPrompt.VariableInfo.Name.get -> string!
+TypedPrompt.VariableInfo.Name.init -> void
+TypedPrompt.VariableInfo.Required.get -> bool
+TypedPrompt.VariableInfo.Required.init -> void
+TypedPrompt.VariableInfo.Type.get -> TypedPrompt.VariableType
+TypedPrompt.VariableInfo.Type.init -> void
+TypedPrompt.VariableInfo.VariableInfo(string! Name, TypedPrompt.VariableType Type, bool Required, object? Default = null, string? Description = null) -> void
+TypedPrompt.VariableType
+TypedPrompt.VariableType.Boolean = 2 -> TypedPrompt.VariableType
+TypedPrompt.VariableType.Number = 1 -> TypedPrompt.VariableType
+TypedPrompt.VariableType.Text = 0 -> TypedPrompt.VariableType
