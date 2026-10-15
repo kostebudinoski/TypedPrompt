@@ -218,6 +218,43 @@ A file with errors generates no class; the other files still do.
 To see the generated code, set `<EmitCompilerGeneratedFiles>true</EmitCompilerGeneratedFiles>`; the files appear under
 `obj/.../generated/TypedPrompt.CSharp.Generator/`. Generated classes are `partial`, so you can add members in your own file.
 
+## Sharing prompts between projects
+
+**Recommended: a prompts library.** Put the prompts in a class library, reference `TypedPrompt` there, and ship it as a
+package (or a project reference inside one solution):
+
+```xml
+<!-- MyCompany.Prompts.csproj, with the files in Prompts/*.prompt.toml -->
+<PropertyGroup>
+  <TypedPromptNamespace>MyCompany.Prompts</TypedPromptNamespace>   <!-- otherwise MyCompany.Prompts.Prompts -->
+</PropertyGroup>
+<ItemGroup>
+  <PackageReference Include="TypedPrompt" Version="..." />
+</ItemGroup>
+```
+
+`dotnet pack` it to your feed; apps reference only `MyCompany.Prompts`. They need no `.prompt.toml` files and no
+generator setup: the classes and their content hashes are compiled into the library, and the generator doesn't run again
+in the app. The prompts get their own repository, review and versions; apps pick up changes by bumping the package.
+
+**Alternative: prompt files from outside the project** (a submodule, a sibling checkout, a monorepo folder):
+
+```xml
+<PropertyGroup>
+  <TypedPromptAutoInclude>false</TypedPromptAutoInclude>
+</PropertyGroup>
+<ItemGroup>
+  <AdditionalFiles Include="..\shared-prompts\**\*.prompt.toml" />
+</ItemGroup>
+```
+
+Mistakes in those files still fail the build, with the full path to the file.
+
+**Compatibility.** A prompts library is compiled against one `TypedPrompt` version, and an app may bring a newer one.
+The runtime's public API only grows: members are added, not changed or removed, so a library built against an older
+version keeps working. Breaking changes to it come only in a new major version (during `0.x`, called out in the
+changelog).
+
 ## Build from source
 
 ```
@@ -230,7 +267,9 @@ dotnet pack src/TypedPrompt -c Release -o artifacts     # one package: runtime +
 ## Releasing
 
 Versions come from git tags ([MinVer](https://github.com/adamralph/minver)): untagged builds are `0.1.0-preview.0.N`.
-To publish, update `CHANGELOG.md`, then tag and push:
+To publish, update `CHANGELOG.md`, move the lines from `src/TypedPrompt/PublicAPI.Unshipped.txt` to
+`PublicAPI.Shipped.txt` (the build fails with RS0016/RS0017 when the runtime's public API changes without them), then tag
+and push:
 
 ```
 git tag v0.1.0-preview.1
