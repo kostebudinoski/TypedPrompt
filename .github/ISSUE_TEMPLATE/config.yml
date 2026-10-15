@@ -1,0 +1,5 @@
+blank_issues_enabled: false
+contact_links:
+  - name: Documentation
+    url: https://github.com/kostebudinoski/TypedPrompt#readme
+    about: Prompt format, settings and build errors (TP001-TP013).

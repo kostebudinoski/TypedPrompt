@@ -1,0 +1,57 @@
+name: Bug report
+description: Something doesn't build, generates the wrong code, or renders the wrong prompt.
+labels: [bug]
+body:
+  - type: textarea
+    id: what
+    attributes:
+      label: What happened
+      description: Include the full error text (e.g. `error TP004: ...`) or the wrong output.
+    validations:
+      required: true
+  - type: textarea
+    id: expected
+    attributes:
+      label: What you expected
+    validations:
+      required: true
+  - type: textarea
+    id: prompt
+    attributes:
+      label: Prompt file
+      description: The `.prompt.toml` that causes it, as small as you can make it.
+      render: toml
+  - type: textarea
+    id: code
+    attributes:
+      label: C# code
+      description: The code that uses the generated class, if it matters.
+      render: csharp
+  - type: input
+    id: version
+    attributes:
+      label: TypedPrompt version
+      placeholder: 0.1.0-preview.1
+    validations:
+      required: true
+  - type: input
+    id: sdk
+    attributes:
+      label: .NET SDK
+      description: Output of `dotnet --version`.
+      placeholder: 10.0.100
+    validations:
+      required: true
+  - type: dropdown
+    id: where
+    attributes:
+      label: Where you see it
+      multiple: true
+      options:
+        - dotnet build / CI
+        - Visual Studio
+        - Rider
+        - VS Code
+        - Other editor
+    validations:
+      required: true
